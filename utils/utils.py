@@ -143,7 +143,7 @@ def filter_split(w_array, stride, out_num, in_num, row, col):
     return trans_w_array
 
 
-def image_process(in_array):
+def image_process(in_array, file_name=""):
     size_y = in_array.shape[0]
     size_x = in_array.shape[1]
     im = Image.new("RGB", (size_y, size_x))
@@ -154,7 +154,7 @@ def image_process(in_array):
                         (int((in_array[i][j][0] + 1) * (255 / 2)), int((in_array[i][j][1] + 1) * (255 / 2)),
                          int((in_array[i][j][2] + 1) * (255 / 2))))
 
-    plt.imsave("./images/image_sd.png", im)
+    plt.imsave("./images/" + file_name + ".png", im)
 
 
 def insert_zeros(in_array, stride, lp=0, rp=0, tp=0, bp=0):

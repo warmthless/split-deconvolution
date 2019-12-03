@@ -1,4 +1,0 @@
-# pip install -U -r requirements.txt
-Pillow
-matplotlib
-tensorflow == 1.12.0

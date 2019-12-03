@@ -2,8 +2,8 @@
 This is a demo of the split deconvolution inference process, which also includes the tensorflow inference process for verification.
 
 ## Requirements
-* PIL 1.1.7
-* matplotlib 3.0.2
+* Pillow
+* matplotlib
 * tensorflow 1.12.0
 
 
@@ -16,7 +16,7 @@ python SD_Setup.py --model DCGAN
 ## Usage
 
 In order to use your own data, you have to provide
-* Network Configuraton `.csv`
+* Network configuration `.csv`
 * Model Parameters `.npy`
 
 ## Utils

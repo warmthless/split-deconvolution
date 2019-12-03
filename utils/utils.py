@@ -183,3 +183,19 @@ def insert_zeros(in_array, stride, lp=0, rp=0, tp=0, bp=0):
 
     return new_pad_array
 
+
+def image_comparison(path="./images/"):
+    tf_image = np.array(Image.open(path + "image_tf_deconv.png"))
+    split_image = np.array(Image.open(path + "image_split_deconv.png"))
+    error = np.mean(tf_image - split_image)
+
+    tf_mean, tf_var = np.mean(tf_image), np.var(tf_image)
+    split_mean, split_var = np.mean(split_image), np.var(split_image)
+    cov = np.mean((tf_image - tf_mean) * (split_image - split_mean))
+    c1 = (0.01*255)**2
+    c2 = (0.03*255)**2
+    ssim_value = ((2 * tf_mean * split_mean + c1) * (2 * cov + c2)) / ((tf_mean ** 2 + split_mean ** 2 + c1) * (tf_var + split_var + c2))
+
+    print("The error is: ", error)
+    print("The SSIM Value is: ", ssim_value)
+

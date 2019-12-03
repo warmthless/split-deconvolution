@@ -33,24 +33,16 @@ python Setup.py --model DCGAN --mode verify
 ```
 
 ## Deconvolution execution on Google Edge TPU
-The code can be found in ./runtime-comparison
-Platform: 
-
-
 In order to use your own data on Google Edge TPU, you need to provide
 * Network configuration `.csv`
 * Model Parameters `.npy`
 
-We implement some auxiliary functions to help with the deployment. 
-They are included in `utils/utils.py`.  
+To compare the deconvolution implementations on Google Edge TPU, we have one deconvolution layer implemented using both baseline deconvolution and the split deconvolution. The data for the two deconvolution implementations are stored as two `.pb` files which is required by Google Edge TPU and can be downloaded from the dropbox link https://www.dropbox.com/sh/qenwhtupqkfsezv/AACRLlnFvzCe2VvkXCC3DChJa?dl=0. The reason that we do not implement the whole neural network is that the converted deconvolution using both zero padding and split deconvolution need to reorganize the output for the computing in the next layer. The output reorganization itself is trivial becasue it is essentially store the output data in the on-chip buffers differently. Because this is required for any CNN processors when they want to have the output written back to external memory. However, it is not open to users, so we have no choice but to do it on the host. Also the overhead of data movement on host can be measured as well. The overhead is negligible. 
+
+The inference time of baseline deconvolution (`tf_model.pb`) and split deconvolution (`sd_mdoel.pb`) on TPU is *8.346 ms* and the *2.398 ms* respectively. Note that the output reorganization time is considered in the measurement.
+Detailed instructions to deploy the models on Google Edge TPU can be found in the official documents. https://coral.withgoogle.com/docs/accelerator/get-started/ 
+
+To help the users to experiment with their own data, we also provide some auxiliary functions. They are included in `utils/utils.py`.  
 `generate_input()` is used to generate input for DCGAN.  
-`filter_split()` is used to split and transform the original deconvolution filter.  
-`insert_zeros()` is used to insert zeros in the input feature maps for native zero-padding deconvolution.  
-
-## TPU Models
-There are two `.pb` files of one deconvolutional layer for Edge TPU since the reorganization of the feature maps need to be done on the host.
-The inference time of `tf_model.pb` and `sd_mdoel.pb` on TPU is *8.346 ms* and the *2.398 ms* including the time of reorganization on the host using cpp script.
-For the deployment of models on Edge TPU, you can follow the official documents. https://coral.withgoogle.com/docs/accelerator/get-started/ 
-
-## Dropbox
-This is the Dropbox link https://www.dropbox.com/sh/qenwhtupqkfsezv/AACRLlnFvzCe2VvkXCC3DChJa?dl=0
+`filter_split()` is used to split and convert the original deconvolution filter.  
+`insert_zeros()` is used to insert zeros in the input feature maps for baseline zero-padding-based deconvolution.  

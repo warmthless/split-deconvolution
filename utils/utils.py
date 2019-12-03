@@ -194,7 +194,8 @@ def image_comparison(path="./images/"):
     cov = np.mean((tf_image - tf_mean) * (split_image - split_mean))
     c1 = (0.01*255)**2
     c2 = (0.03*255)**2
-    ssim_value = ((2 * tf_mean * split_mean + c1) * (2 * cov + c2)) / ((tf_mean ** 2 + split_mean ** 2 + c1) * (tf_var + split_var + c2))
+    ssim_value = ((2 * tf_mean * split_mean + c1) * (2 * cov + c2)) / \
+                 ((tf_mean ** 2 + split_mean ** 2 + c1) * (tf_var + split_var + c2))
 
     print("The error is: ", error)
     print("The SSIM Value is: ", ssim_value)

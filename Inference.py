@@ -17,7 +17,6 @@ class Computation:
         self.act_mode = act_mode
 
         self.input_data = input_data
-        # self.tf_input_data = tf_input_data
         self.weight = np.load(weight_file_path)
         self.bias = np.load(bias_file_path)
 

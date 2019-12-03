@@ -5,7 +5,7 @@ the split deconvolution and that calculated using Tensorflow transpose function.
 verifies the correctness of split deconvolution. 
 
 In the second part, we provide the detailed steps to deploy the split deconvolution on Google 
-Edge TPU. Meanwhile, we compare the runtime of the baseline deconvolution and the split 
+Edge TPU and NCS2. Meanwhile, we compare the runtime of the baseline deconvolution and the split 
 deconvolution, which demonstrates the significant performance speedup of split deconvolution 
 over the baseline implementation. Since the native deconvolution (transpose convolution) is not 
 supported on Google Edge TPU, we implement the deconvolution using the well-konwn zero padding 

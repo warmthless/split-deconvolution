@@ -90,21 +90,15 @@ class Computation:
 
     def tf_transpose_conv(self):
         tf_input_data = self.tf_input_data
-
         out_channels = self.weight.shape[0]
-        in_channels = self.weight.shape[1]
-        filter_y = self.weight.shape[2]
-        filter_x = self.weight.shape[3]
 
-        tensor_weights = np.zeros((filter_y, filter_x, out_channels, in_channels), dtype=float)
-        for cur_out in range(out_channels):
-            for cur_in in range(in_channels):
-                tensor_weights[:, :, cur_out, cur_in] = self.weight[cur_out, cur_in, :, :]
+        tensor_weights = np.transpose(self.weight, axes=(2, 3, 0, 1))
 
         weight = tf.Variable(tensor_weights)
         bias = tf.Variable(self.bias)
 
-        output = tf.nn.conv2d_transpose(tf_input_data, weight, output_shape=[1, self.output_y_length, self.output_x_length, out_channels], strides=[1, 2, 2, 1], padding="SAME") + bias
+        output = tf.nn.conv2d_transpose(tf_input_data, weight, output_shape=[1, self.output_y_length,
+                                    self.output_x_length, out_channels], strides=[1, 2, 2, 1], padding="SAME") + bias
         output = self.tf_act_function(output)
 
         return output
@@ -113,8 +107,10 @@ class Computation:
         input_data = tf.Variable(self.tf_input_data)
         weight = tf.Variable(self.weight)
         bias = tf.Variable(self.bias)
+
         output = tf.matmul(input_data, weight) + bias
         output = self.tf_act_function(output)
+
         reshape_channels = int(self.weight.shape[1] / (self.output_x_length * self.output_y_length))
         output = tf.reshape(output, (1, self.output_y_length, self.output_x_length, reshape_channels))
 

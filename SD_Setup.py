@@ -10,11 +10,11 @@ class SplitDeconvolution:
         self.current_networks = network_name
 
     def run_sim(self):
-
         network_parameters_file = open("./networks_configuration/" + self.current_networks + ".csv", 'r')
         first_row_name = True
         latest_result = np.load("./raw_data/" + self.current_networks + "/input/Input_Data.npy")
         tf_latest_result = latest_result
+
         for row in network_parameters_file:
             if first_row_name:
                 first_row_name = False
@@ -22,7 +22,6 @@ class SplitDeconvolution:
 
             layer_parameters = row.strip().split(',')
             if len(layer_parameters) < 10:
-
                 continue
 
             name = layer_parameters[0]
@@ -43,8 +42,8 @@ class SplitDeconvolution:
             running = SD_Inference.Computation(stride, output_x_length,
                                                output_y_length, input_pad, op_mode, act_mode,
                                                latest_result, tf_latest_result, weight_file_path, bias_file_path)
+            # split deconvolution
             latest_result = running.operation_executive()
-
             # tensorflow verification
             tf_latest_result = running.tf_executive()
 
@@ -56,6 +55,7 @@ class SplitDeconvolution:
 
         print("Split Deconvolution Inference Done")
         print("Tensorflow Inference Done")
+
 
 def main():
     parser = argparse.ArgumentParser()

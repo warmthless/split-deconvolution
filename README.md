@@ -23,8 +23,8 @@ In order to use your own data, you have to provide
 
 There are some function tools in `utils/utils.py`.
 
-`generate_input()` is used to generate input for DCGAN.
-`filter_split()` is used to split and transform the original deconvolution filter.
+`generate_input()` is used to generate input for DCGAN.  
+`filter_split()` is used to split and transform the original deconvolution filter.  
 `insert_zeros()` is used to insert zeros in the input feature maps for native zero-padding deconvolution.
 
 ## TPU Models

@@ -42,7 +42,7 @@ python Setup.py --model DCGAN --mode verify
 All the models can be downloaded from the dropbox link https://www.dropbox.com/sh/qenwhtupqkfsezv/AACRLlnFvzCe2VvkXCC3DChJa?dl=0.  
 To compare the deconvolution implementations on Google Edge TPU and NCS2, we have one deconvolution layer implemented using both baseline deconvolution and the split deconvolution. The data for the two deconvolution implementations are stored as two `.pb` files which is required by Google Edge TPU  and two `.onnx` files for NCS2.
 
-The reason that we do not implement the whole neural network is that the converted deconvolution using both zero padding and split deconvolution need output reorganization for the computing in the next layer. The output reorganization itself is trivial becasue it is essentially to store the output data in the on-chip buffers in DRAM on some scattered but sequential locations of DRAM which is slightly differently to a conventional sequential write back. As DMA module is usually required for any CNN processors because they want to have the output written back to external memory. However, it is not open to users, so we have no choice but to do it on the host. Also the overhead of the data reorganization on host can be measured. The overhead is negligible according to our experiments. The whole dataflow is also verified on our in-house AI chip, through it is not in the market yet. We are working toward to an open sourced FPGA version with netlist. It will appear soon. We will have more experiments announced later.
+The reason that we do not implement the whole neural network is that the converted deconvolution using both zero padding and split deconvolution need output reorganization for the computing in the next layer. The output reorganization itself is trivial because it is essentially to store the output data in the on-chip buffers in DRAM on some scattered but sequential locations of DRAM which is slightly differently to a conventional sequential write back. As DMA module is usually required for any CNN processors because they want to have the output written back to external memory. However, it is not open to users, so we have no choice but to do it on the host. Also the overhead of the data reorganization on host can be measured. The overhead is negligible according to our experiments. The whole dataflow is also verified on our in-house AI chip, through it is not in the market yet. We are working toward to an open sourced FPGA version with netlist. It will appear soon. We will have more experiments announced later.
 
 1. Deconvolution execution on Google Edge TPU  
 The inference time of baseline deconvolution (`DropBox: /models/example_models/tf_model.pb`) and split deconvolution (`DropBox: /models/example_models/sd_mdoel.pb`) on TPU is *104.88 ms* and the *49.85 ms* respectively. Note that the output reorganization time is considered in the measurement.  
@@ -70,6 +70,27 @@ The experimental models used in the paper are stored in `DropBox: /models/experi
     | ArtGAN | 465.55 | 355.89 | 1.31x |
     | GP-GAN | 177.24 | 108.60 | 1.63x |
     | MDE | 2308.84 | 1673.15 | 1.38x |
+    
+    Similar to NCS2, we compare the computing efficiency of convolution with different input feature map sizes and filter sizes, which has the same trend as NCS2 described in the paper.  
+    *Filter size is set to be 3 x 3*
+    
+    | Feature map size | # of input channels | # of output channels| Normalized GMACPS|
+    |:------:|:------:|:------:|:------:| 
+    | 8 x 8 | 256 | 128 | 1x |
+    | 16 x 16 | 256 | 128 | 1.32x |
+    | 32 x 32 | 256 | 128 | 1.76x |
+    | 64 x 64 | 256 | 128 | 1.88x |
+    | 128 x 128 | 256 | 128 | 1.98x |
+    
+    *Feature map size is set to be 128 x 128*
+    
+    | Filter size | # of input channels | # of output channels| Normalized GMACPS|
+    |:------:|:------:|:------:|:------:| 
+    | 2 x 2 | 256 | 128 | 1x |
+    | 3 x 3 | 256 | 128 | 2.14x |
+    | 4 x 4 | 256 | 128 | 3.64x |
+    | 5 x 5 | 256 | 128 | 5.22x |
+
 
 2. Deconvolution execution on NCS2  
 The inference time of baseline deconvolution (`DropBox: /models/example_models/transpose_conv.onnx`) and split deconvolution (`DropBox: /models/example_models/split_deconv.onnx`) on TPU is *30.713ms* and the *29.384ms* respectively. Note that the output reorganization time is considered in the measurement.
@@ -87,8 +108,8 @@ The experimental models used in the paper are stored in `DropBox: /models/experi
     
 &nbsp;
 
-####Important Note
-The performance of Edge TPU and NCS2 is test by python module `time` which is not so precise. i.e. The running time of a single layer can vary from 10 ms to 50 ms, depending on the correspond time of host.
+**Important Note**  
+The performance of Edge TPU and NCS2 is tested by python module `time`, which is not accurate. i.e., The running time of a single layer can vary from 10 ms to 50 ms, depending on the corresponding time of the host.
 
 To help the users to experiment with their own data, we also provide some auxiliary functions. They are included in `utils/utils.py`.  
 `generate_input()` is used to generate input for DCGAN.  

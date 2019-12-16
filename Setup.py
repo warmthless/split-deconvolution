@@ -38,12 +38,15 @@ class SplitDeconvolution:
                          int(layer_parameters[6]), int(layer_parameters[7])]
             op_mode = layer_parameters[8]
             act_mode = layer_parameters[9]
+            # out = int(layer_parameters[10])
 
             running = Inference.Computation(stride, output_x_length, output_y_length, input_pad, op_mode, act_mode,
                                             latest_result, weight_file_path, bias_file_path)
             # split deconvolution
             if self.inference_mode == "split_deconv":
                 latest_result = running.operation_executive()
+                # save_f = latest_result.reshape((out, output_x_length * output_y_length))
+                # np.savetxt(name + ".txt", save_f, '%.7f')
             elif self.inference_mode == "tf_deconv":
                 latest_result = running.tf_executive()
 

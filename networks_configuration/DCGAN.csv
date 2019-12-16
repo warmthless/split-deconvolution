@@ -1,5 +1,5 @@
-Layer name, Stride, Output x length, Output y length, i_pad_left, i_pad_right, i_pad_top, i_pad_bottom, op_mode, act_mode
-FC, 1, 8, 8, 0, 0, 0, 0, gan_fc, relu
-Deconv1, 2, 16, 16, 1, 1, 1, 1, gan_deconv, relu
-Deconv2, 2, 32, 32, 1, 1, 1, 1, gan_deconv, relu
-Deconv3, 2, 64, 64, 1, 1, 1, 1, gan_deconv, tanh
+Layer name, Stride, Output x length, Output y length, i_pad_left, i_pad_right, i_pad_top, i_pad_bottom, op_mode, act_mode, out
+FC, 1, 8, 8, 0, 0, 0, 0, gan_fc, relu, 256
+Deconv1, 2, 16, 16, 1, 1, 1, 1, gan_deconv, relu, 128
+Deconv2, 2, 32, 32, 1, 1, 1, 1, gan_deconv, relu, 64
+Deconv3, 2, 64, 64, 1, 1, 1, 1, gan_deconv, tanh, 3

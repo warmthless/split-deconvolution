@@ -10,6 +10,7 @@ deconvolution, which demonstrates the significant performance speedup of split d
 over the baseline implementation. Since the native deconvolution (transpose convolution) is not 
 supported on Google Edge TPU, we implement the deconvolution using the well-known zero padding 
 on input activations which is also included in the repo. 
+Paper Preprint:https://arxiv.org/abs/1907.01773
 
 
 ## Prerequisites

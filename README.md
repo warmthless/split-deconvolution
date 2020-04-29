@@ -9,7 +9,8 @@ Edge TPU and NCS2. Meanwhile, we compare the runtime of the baseline deconvoluti
 deconvolution, which demonstrates the significant performance speedup of split deconvolution 
 over the baseline implementation. Since the native deconvolution (transpose convolution) is not 
 supported on Google Edge TPU, we implement the deconvolution using the well-known zero padding 
-on input activations which is also included in the repo. 
+on input activations which is also included in the repo.
+
 Paper Preprint:https://arxiv.org/abs/1907.01773
 
 

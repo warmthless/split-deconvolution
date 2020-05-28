@@ -154,8 +154,8 @@ def image_process(in_array, file_name=""):
                         (int((in_array[i][j][0] + 1) * (255 / 2)), int((in_array[i][j][1] + 1) * (255 / 2)),
                          int((in_array[i][j][2] + 1) * (255 / 2))))
 
-    plt.imsave("./images/" + file_name + ".png", im)
-
+    # plt.imsave("./images/" + file_name + ".png", im)
+    im.save("./images/" + file_name + ".png", "png")
 
 def insert_zeros(in_array, stride, lp=0, rp=0, tp=0, bp=0):
     """ insert_zeros
